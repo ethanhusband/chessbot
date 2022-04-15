@@ -5,107 +5,14 @@
 #include <math.h>
 #include <strings.h>
 #include <limits.h>
+#include "ChessBot.h"
+#include "Operations.h"
+#include "Types.h"
 
-/* MACROS (NOT MAKRIS) */
-
-/* The reading constants */
-#define BOARD_SIZE 8
-#define SENTINEL -1
-#define CELL_ORDINATES 2
-#define CHECK_MOVE 2
-#define BLACK_MOVE 0
-#define WHITE_MOVE 1
-/* where each of the move indexes are stored in a move vector */
-#define SOURCE_ROW 0
-#define SOURCE_COL 1
-#define TARGET_ROW 2
-#define TARGET_COL 3
-#define WHITE_PAWN_ROW 1
-#define BLACK_PAWN_ROW 6
-#define PAWN_START_DIST 2
-#define PAWN_MOVE_DIST 1
-#define EN_PASSENTWROW 4
-#define EN_PASSENTBROW 3
-#define TOTAL_CASTLES 4
-
-/* Eval bar constants */
-#define PAWN_COST 100
-#define KNIGHT_COST 300
-#define BISHOP_COST 300
-#define ROOK_COST 500
-#define QUEEN_COST 900
-#define KING_COST 1000000000
-
-/* The board design */
-#define EMPTY_CELL '.'
-#define BLACK_PAWN 'p'
-#define BLACK_KNIGHT 'n'
-#define BLACK_BISHOP 'b'
-#define BLACK_ROOK 'r'
-#define BLACK_QUEEN 'q'
-#define BLACK_KING 'k'
-
-#define WHITE_PAWN 'P'
-#define WHITE_KNIGHT 'N'
-#define WHITE_BISHOP 'B'
-#define WHITE_ROOK 'R'
-#define WHITE_QUEEN 'Q'
-#define WHITE_KING 'K'
-
-#define ROW_SEPERATOR "   +---+---+---+---+---+---+---+---+\n"
-#define MOVE_SEPERATOR "=====================================\n"
-#define TEAM_PIECES 12
-#define COLUMNS "     A   B   C   D   E   F   G   H\n"
-#define PROGRAM_MOVE "*** "
-#define READ_MOVE 0
-#define COMPUTED_MOVE 1
-
-/* The computation constants */
-#define TREE_DEPTH 3
-#define INITIAL_DEPTH 0
-#define NO_OPTIONS 0
-#define INITIAL_SIZE 20
-
-/* TYPEDEFS */
-
-typedef int castling_t[TOTAL_CASTLES];
-typedef char board_t[BOARD_SIZE][BOARD_SIZE];
-typedef int indexvector_t[CELL_ORDINATES*CELL_ORDINATES];
-typedef char movechars_t[CELL_ORDINATES*CELL_ORDINATES];
-
-typedef struct {
-    indexvector_t vector;
-    castling_t castle_info;
-    int movenum, en_passent, en_passent_col;
-    /* Note: en_passent TRUE indicates it is available, not that it has happened */
-} move_t;
-
-typedef struct node decision_node_t;
-struct node {
-    board_t board;
-    int options, minimax_cost;
-    move_t move;
-    decision_node_t *next_move;
-};
-
-board_t starting_board = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, \
-                          {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'}, \
-                          {'.', '.', '.', '.', '.', '.', '.', '.'},\
-                          {'.', '.', '.', '.', '.', '.', '.', '.'},\
-                          {'.', '.', '.', '.', '.', '.', '.', '.'},\
-                          {'.', '.', '.', '.', '.', '.', '.', '.'},\
-                          {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},\
-                          {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}};
-
-    /* For caslting purposes */
 
 /* FUNCTION PROTOTYPES */
 
-int ctoi(char movenode);
-int itoc(int movenode, int from);
-void make_indexvector(movechars_t cvector, indexvector_t ivector);
-void make_movechars(movechars_t cvector, indexvector_t ivector);
-void copy_board(board_t b1, board_t b2);
+
 void print_move(board_t board, int programmove, move_t *curmove);
 void print_board(board_t board);
 
@@ -137,13 +44,15 @@ double aggregate_cost(board_t board);
 /* MAIN FUNCTION */
 
 int main(int argc, char const *argv[]) {
-    int moves = 0, en_passent, en_passent_col, i;
+    /* Store variables with the number of moves in the game,
+        whether en_passent just occurred, the column it just occurred in */
+    int moves = 0, en_passent, en_passent_col;
     board_t board;
     castling_t rook_info;
-    copy_board(board, starting_board);
+    copy_board(starting_board, board);
     printf("STARTING POSITION:\n");
     print_board(board);
-    for (i=0; i<TOTAL_CASTLES; i++) {
+    for (int i=0; i<TOTAL_CASTLES; i++) {
         /* None of the rooks have castled yet */
         rook_info[i] = 1;
     }
@@ -154,105 +63,9 @@ int main(int argc, char const *argv[]) {
 
 /* INPUT SECTION */
 
-    /* OPERATIONS */
-int ctoi(char movenode) {
-    /* Convert a cell char to corresponding board_t index */
-    /* Returns impossible SENTINEL if char invalid */
-    int move_index;
-    if ((movenode>='A') && (movenode<='H')) {
-        move_index = (int)movenode - (int)'A';
-    } else if ((movenode>='1') && (movenode<='8')) {
-        move_index = (int)movenode - (int)'1';
-    } else {
-        /* This move must be invalid, so set the sentinel */
-        move_index = SENTINEL;
-    }
-    return move_index;
-}
+   
 
-int itoc(int movenode, int from) {
-    assert((movenode>=0) && (movenode <= 7));
-    /* If the index movenode is from was even, we need to convert to a row char, 
-    otherwise col char, because of how the indexvector is structured */
-    int rowflag = from%2;
-    /* We are converting an index to a row character */
-    if (rowflag==0) {
-        return (char)(movenode + '1');
-    } else {
-        return (char)(movenode + 'A');
-    }
-}
 
-void make_indexvector(movechars_t cvector, indexvector_t ivector) {
-    /* Convert move vector represented in char into int representation */
-    /* Note: the row/col positions are inverted for the char vector */
-    ivector[SOURCE_ROW] = ctoi(cvector[SOURCE_ROW]);
-    ivector[SOURCE_COL] = ctoi(cvector[SOURCE_COL]);
-    ivector[TARGET_ROW] = ctoi(cvector[TARGET_ROW]);
-    ivector[TARGET_COL] = ctoi(cvector[TARGET_COL]);
-}
-
-void make_movechars(movechars_t cvector, indexvector_t ivector) {
-    /* Convert move vector represented in int into char representation */
-    cvector[SOURCE_ROW] = itoc(ivector[SOURCE_ROW], SOURCE_ROW);
-    cvector[SOURCE_COL] = itoc(ivector[SOURCE_COL], SOURCE_COL);
-    cvector[TARGET_ROW] = itoc(ivector[TARGET_ROW], TARGET_ROW);
-    cvector[TARGET_COL] = itoc(ivector[TARGET_COL], TARGET_COL);
-}
-
-void copy_board(board_t b1, board_t b2) {
-    /* Copy board 2 to board 1 */
-    int i, j;
-    for (i=0; i<BOARD_SIZE; i++) {
-        for (j=0; j<BOARD_SIZE; j++) {
-            b1[i][j] = b2[i][j];
-        }
-    }
-}
-
-        /* Not done - need eval bar */
-void print_move(board_t board, int programmove, move_t *curmove) {
-    /* Print the current move */
-    movechars_t output;
-    make_movechars(output, curmove->vector);
-    printf(MOVE_SEPERATOR);
-    /* Check if we're reading a move or the program is playing it */
-    if (programmove) {
-        printf(PROGRAM_MOVE);
-    }
-    /* Check if black or white move (given white starts) */
-    if (curmove->movenum%CHECK_MOVE==WHITE_MOVE) {
-        printf("WHITE ACTION #%d: ", curmove->movenum);
-    } else {
-        printf("BLACK ACTION #%d: ", curmove->movenum);
-    }
-    printf("%c moves %c%c-%c%c\n", board[curmove->vector[TARGET_ROW]][curmove->vector[TARGET_COL]], \
-                output[SOURCE_COL], output[SOURCE_ROW], \
-                output[TARGET_COL], output[TARGET_ROW]);
-    printf("MATERIAL COST: %d\n", material_cost(board)/100);
-    /* NOT FINISHED */
-    printf("POSITIONAL COST: %d\n", positional_cost(board)/100);
-    printf("AGGREGATE SCALED COST: %.1lf\n", aggregate_cost(board));
-    /* NOT FINISHED */
-    print_board(board);
-}
-
-void print_board(board_t board) {
-    /* Print the current game board */
-    int i, j;
-    for (i=BOARD_SIZE-1; i>=0; i--) {
-        printf(ROW_SEPERATOR);
-        /* Print the current row number on the side */
-        printf(" %d |", i+1);
-        /* Print every item in that row */
-        for (j=0; j<BOARD_SIZE; j++) {
-            printf(" %c |", board[i][j]);
-        }
-        putchar('\n');
-    }
-    printf(ROW_SEPERATOR);
-    printf(COLUMNS);
-}
 
     /* READING MOVES */
 
@@ -296,7 +109,7 @@ int read_input(board_t board, int *moves, int *Men_passent, int *Men_passent_col
         This computation is then used to assign the en_passent values next round */
         en_passent_available(board, curmove, &en_passent, &en_passent_col);
         update_board(board, curmove);
-        print_move(board, READ_MOVE, curmove);
+        print_move(board, !IS_COMPUTER_MOVE, curmove);
         free(curmove);
     }
     *Men_passent = en_passent;
@@ -867,7 +680,7 @@ int play_round(board_t board, int move, int en_passent, int en_passent_col, cast
     /* Play a round of the game, return 0 if game over, 1 otherwise */
     decision_node_t *root=malloc(sizeof(decision_node_t));
     move_t *best_move=malloc(sizeof(move_t));
-    copy_board(root->board, board);
+    copy_board(board, root->board);
     recursive_addlayers(root, move, INITIAL_DEPTH);
     find_move(root, best_move);
     best_move->movenum = move;
@@ -990,7 +803,7 @@ void add_w_pawn_options(move_t *last, decision_node_t *possible_moves, int i, in
 /* NOT YET APPLICABLE */
 decision_node_t* create_move(board_t board, move_t move) {
     decision_node_t *newnode=malloc(sizeof(decision_node_t));
-    copy_board(newnode->board, board);
+    copy_board(board, newnode->board);
 
     update_board(newnode->board, move);
     newnode->next_move = NULL;
