@@ -47,11 +47,20 @@ int main(int argc, char const *argv[]) {
     return 0;
 }
 
-/* PROCESS OUTLINE 
+/* REAME.md:  
+
+CODEBASE STANDARDS:
+
+    - All functions should include JavaDocs
+    - All .c files should #include their complementary .h files
+    - Abstract common properties of pieces wherever possible
+    - Implement the most run-time optimised algorithms possible
+
+ROADMAP / ALGORITHM OUTLINE
 
 * Copy the starting board to the main board.
 * Read a given FEN
-    * DISABLABLE Ensure read moves are legal
+    * DISQUALIFIABLE Ensure read moves are legal
 * Implement generalised and efficient legal move checking system
 * Create minimax tree that works for specified depth
     * Create eval bar
@@ -66,17 +75,29 @@ int main(int argc, char const *argv[]) {
         * ? Board Symmetries
     * ? Bitboards (Represent board with FEN)
     * ? Use endgame database
-* DISABLABLE Print each move
+* DISQUALIFIABLE Print each move
     * Print whose move it is, cost, board, move that occurred, whether game is over
 
-*/
-
-/* CURRENT PROGRESS :
+CURRENT PROGRESS :
 
 * Copy the starting board to the main board.
 * 
-    * Ensure read moves are legal 
-* Print the moves
-* Print the material cost of the board
+    * DISQUALIFIABLE Ensure read moves are legal
+* 
+* 
+    * 
+        * 
+        * 
+        * 
+        * 
+            * 
+    *  
+    * 
+    * 
+        * 
+    * 
+    * 
+* DISQUALIFIABLE Print each move
+    * Print whose move it is, cost, board, move that occurred, whether game is over
 
 */
