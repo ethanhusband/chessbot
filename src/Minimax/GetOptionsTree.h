@@ -1,0 +1,1 @@
+void calculate_options(decision_node_t *node);

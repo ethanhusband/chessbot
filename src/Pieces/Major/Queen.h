@@ -1,0 +1,1 @@
+int queen_legal(board_t board, move_t *curmove);

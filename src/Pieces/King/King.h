@@ -1,0 +1,1 @@
+int king_legal(board_t board, move_t *curmove);

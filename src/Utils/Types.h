@@ -1,4 +1,8 @@
+#include "Macros.h"
+
 /* TYPEDEFS */
+
+    typedef int Boolean;
 
     /* Array of length 4 where each index stores a boolean value regarding whether a castle has 'castled' yet or not */
     typedef int castling_t[TOTAL_CASTLES];
