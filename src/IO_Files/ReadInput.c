@@ -1,49 +1,50 @@
 #include "ReadInput.h"
 
-int read_movesfile(board_t board, int *moves, int *Men_passent, int *Men_passent_col, castling_t Mcastle_info) {
+/**
+ * @brief - Reads the moves from a given movesfile onto main board and main curmove. Returns TRUE or FALSE if legal.
+ * 
+ * @param board - 2D array representing the board
+ * @param curmove - Represents a move made within a game
+ * @return Boolean - Returns TRUE if input was all legal
+ */
+Boolean read_movesfile(board_t board, move_t *curmove) {
     /* Interpret the input from a movesFile, update the board.
     Return 1 if input is valid, 0 otherwise */
-    int en_passent=0, en_passent_col=SENTINEL, i;
+    int can_en_passent=0, en_passent_col=SENTINEL, i;
     char sourcepiece;
     movechars_t cvector;
     indexvector_t ivector;
-    move_t *curmove;
-    while (scanf("%c%c-%c%c\n", &cvector[SOURCE_COL], &cvector[SOURCE_ROW], \
-            &cvector[TARGET_COL], &cvector[TARGET_ROW]) != EOF) { 
-        (*moves)++;
+    while (scanf("%c%c-%c%c\n", &cvector[SOURCE_COL], &cvector[SOURCE_ROW], &cvector[TARGET_COL], &cvector[TARGET_ROW]) != EOF) { 
+        (curmove->movenum)++;
 
+    #if DEBUG
         printf("MOVE READ: %c%c-%c%c\n", cvector[SOURCE_COL], cvector[SOURCE_ROW], cvector[TARGET_COL], cvector[TARGET_ROW]);
+    #endif
+        /* Translate read char vector to index vector */
         make_indexvector(cvector, ivector);
+    #if DEBUG
         printf("MOVE CONVERTED: %d,%d-%d,%d\n", ivector[SOURCE_ROW], ivector[SOURCE_COL], ivector[TARGET_ROW], ivector[TARGET_COL]);
+    #endif
 
-        curmove=(move_t*)malloc(sizeof(move_t));
+        /* Assign read index vector to the curmove structure */
         for (i=0; i<CELL_ORDINATES*CELL_ORDINATES; i++) {
             curmove->vector[i] = ivector[i];
         }
-        curmove->movenum = *moves;
-        curmove->en_passent = en_passent; 
-        curmove->en_passent_col = en_passent_col;
-        for (i=0; i<TOTAL_CASTLES; i++) {
-            curmove->castle_info[i] = Mcastle_info[i];
-        }
-        /* Ensure the input is legal */
-        if (!legal_input(board, curmove)) {
-            printf("TERMINATED: ILLEGAL INPUT\n");
-            return 0;
-        }
-        /* Update which rooks can still castle */
-        sourcepiece = board[ivector[SOURCE_ROW]][ivector[SOURCE_COL]];
-        if ((sourcepiece == WHITE_ROOK) || (sourcepiece == BLACK_ROOK)) {
-            update_rooks(board, curmove, Mcastle_info);
-        }
-        /* En Passent is read to local variables after computing legality.
-        This computation is then used to assign the en_passent values next round */
-        en_passent_available(board, curmove, &en_passent, &en_passent_col);
-        update_board(board, curmove);
-        print_move(board, !IS_COMPUTER_MOVE, curmove);
-        free(curmove);
+
+#if CHECK_LEGAL
+    /* Ensure the input is legal */
+    if (!legal_input(board, curmove)) {
+        printf("TERMINATED: ILLEGAL INPUT\n");
+        return FALSE;
     }
-    *Men_passent = en_passent;
-    *Men_passent_col = en_passent_col;
-    return 1;
+#endif
+
+        /* Update which rooks can still castle */
+        update_castling_info(board, curmove);
+        update_board(board, curmove);
+#if RELAY_GAME
+        print_move(board, !IS_COMPUTER_MOVE, curmove);
+#endif
+    }
+    return TRUE;
 }

@@ -70,28 +70,22 @@ int promotion(board_t board, move_t *curmove) {
     }
 }
 
-int en_passent_happened(board_t board, move_t *curmove) {
+/* This function is no longer really valid with current move_t structure */
+Boolean en_passent_happened(board_t board, move_t *curmove) {
     /* Assumes sourcepiece and board locations are correct */
     /* Return 1 if an en_passent capture happened, 0 otherwise */
-    if (!curmove->en_passent) {
-        return 0;
-    }
     int move = curmove->movenum%CHECK_MOVE, vertdist=curmove->vector[TARGET_ROW]-curmove->vector[SOURCE_ROW],\
         hozdist=abs(curmove->vector[TARGET_COL]-curmove->vector[SOURCE_COL]);
     char sourcepiece = board[curmove->vector[SOURCE_ROW]][curmove->vector[SOURCE_COL]];
+    char target = board[curmove->vector[TARGET_ROW]][curmove->vector[TARGET_COL]];
     /* Ensure move is even with the right piece */
     if ((sourcepiece != BLACK_PAWN) || (sourcepiece != WHITE_PAWN))  {
-        return 0;
+        return FALSE;
     /* Ensure capture is possible with piece, and move is diagonal */
-    } else if ((curmove->vector[TARGET_COL] == curmove->en_passent_col) && (hozdist == 1)) {
-        /* Ensure capture was with the right piece and of the opposition */
-        if ((move==WHITE_MOVE) && (sourcepiece == WHITE_PAWN) && (curmove->vector[SOURCE_ROW] == EN_PASSENTWROW) && \
-            (islower(board[curmove->vector[TARGET_ROW-1]][curmove->vector[TARGET_COL]])) && (vertdist == 1)) {
-            return 1;
-        } else if ((sourcepiece == BLACK_PAWN) && (curmove->vector[SOURCE_ROW] == EN_PASSENTWROW) && \
-                    (isupper(board[curmove->vector[TARGET_ROW+1]][curmove->vector[TARGET_COL]])) && (vertdist == -1)) {
-            return 1;
-        }
-    } 
-    return 0;
+    }
+    if (hozdist == 1 && vertdist == 1 && target == EMPTY_CELL) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }

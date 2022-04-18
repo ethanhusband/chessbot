@@ -35,7 +35,7 @@ void recur_fill_costs(decision_node_t *root, int depth) {
 void propagate_cost(decision_node_t *root) {
     /* Return the max/min cost for the children of the current node */
     int propagated_cost, i;
-    if (root->move.movenum%CHECK_MOVE == BLACK_MOVE) {
+    if (root->move->movenum%CHECK_MOVE == BLACK_MOVE) {
         propagated_cost = INT_MIN;
         /* It must be black's move, so find the max */
         for(i=0; i<root->options; i++) {

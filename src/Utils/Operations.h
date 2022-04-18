@@ -18,5 +18,6 @@ void expand_array(decision_node_t *possible_moves, int index, int *cursize);
 void copy_board(board_t old_board, board_t new_board);
 void update_board(board_t board, move_t *move);
 void recursive_free(decision_node_t *root);
+move_t* create_move(indexvector_t index_vector, castling_t castle_info, int moves, Boolean can_en_passent, int en_passent_col);
 
 #endif /* !OPERATIONS_H_SEEN */

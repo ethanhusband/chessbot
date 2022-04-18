@@ -37,19 +37,41 @@ int rook_legal(board_t board, move_t *curmove) {
     return 1;
 }
 
-void update_rooks(board_t board, move_t *curmove, castling_t rook_info) {
-    if ((curmove->vector[SOURCE_ROW] == 0) && (curmove->vector[SOURCE_COL] == 0)) {
-        rook_info[0] = 0; 
-    } else if ((curmove->vector[SOURCE_ROW] == 0) && (curmove->vector[SOURCE_COL] == 7)) {
-        rook_info[1] = 0;
-    } else if ((curmove->vector[SOURCE_ROW] == 7) && (curmove->vector[SOURCE_COL] == 0)) {
-        rook_info[2] = 0;
-    } else if ((curmove->vector[SOURCE_ROW] == 7) && (curmove->vector[SOURCE_COL] == 7)) {
-        rook_info[3] = 0;
-    }
+void update_castling_info(board_t board, move_t *curmove) {
+    char sourcepiece = board[curmove->vector[SOURCE_ROW]][curmove->vector[SOURCE_COL]];
+    switch (sourcepiece) {
+        case (WHITE_ROOK): {
+            /* Check A1 Rook */
+            if ((curmove->vector[SOURCE_ROW] == 0) && (curmove->vector[SOURCE_COL] == 0)) {
+                curmove->castle_info[A1ROOK_INDEX] = FALSE; 
+            /* Check A8 Rook */
+            } else if ((curmove->vector[SOURCE_ROW] == 0) && (curmove->vector[SOURCE_COL] == 7)) {
+                curmove->castle_info[A8ROOK_INDEX] = FALSE;
+            }
+            break;
+        }
+        case (BLACK_ROOK): {
+            if ((curmove->vector[SOURCE_ROW] == 7) && (curmove->vector[SOURCE_COL] == 0)) {
+                curmove->castle_info[H1ROOK_INDEX] = FALSE;
+            } else if ((curmove->vector[SOURCE_ROW] == 7) && (curmove->vector[SOURCE_COL] == 7)) {
+                curmove->castle_info[H8ROOK_INDEX] = FALSE;
+            }
+            break;
+        }
+        case (WHITE_KING): {
+            curmove->castle_info[A1ROOK_INDEX] = FALSE;
+            curmove->castle_info[A8ROOK_INDEX] = FALSE;
+            break;
+        }
+        case (BLACK_KING): {
+            curmove->castle_info[H1ROOK_INDEX] = FALSE;
+            curmove->castle_info[H8ROOK_INDEX] = FALSE;
+            break;
+        }
+    }  
 }
 
-int castling_happened(board_t board, move_t *curmove) {
+Boolean castling_happened(board_t board, move_t *curmove) {
     char sourcepiece = board[curmove->vector[SOURCE_ROW]][curmove->vector[SOURCE_COL]];
     int hozdist = abs(curmove->vector[TARGET_COL] - curmove->vector[SOURCE_COL]);
     if ((sourcepiece == 'K') && (hozdist == 2)) {

@@ -24,7 +24,7 @@ int play_round(board_t board, int move, int en_passent, int en_passent_col, cast
 void recursive_addlayers(decision_node_t *node, int move, int tree_depth) {
     /* Add depth to the tree in a recursive call at a specified depth */
     int i;
-    node->move.movenum = move;
+    node->move->movenum = move;
     node->options = NO_OPTIONS;
     if (tree_depth>TREE_DEPTH) {
         return;
@@ -46,15 +46,30 @@ void find_move(decision_node_t *root, move_t *best_move) {
     int i;
     if (game_over(root)) {
         /* We're not going to find any moves, so can return early */
-        root->move.movenum = game_over(root);
+        root->move->movenum = game_over(root);
         return;
     }
     recur_fill_costs(root, INITIAL_DEPTH);
     propagate_cost(root);
     for (i=0; i<root->options; i++) {
         if ((root->next_move+i)->minimax_cost == root->minimax_cost) {
-            *best_move = (root->next_move+i)->move;
+            best_move = (root->next_move+i)->move;
             break;
         }
+    }
+}
+
+/* NOT YET APPLICABLE */
+int game_over(decision_node_t *root) {
+    /* Check if the game is over, returning who won if so */
+    if (root->options == NO_OPTIONS) {
+        /* The game must be over if there are no available moves */
+        if (root->move->movenum%CHECK_MOVE == BLACK_MOVE) {
+            return INT_MAX;
+        } else {
+            return INT_MIN;
+        }
+    } else {
+        return 0;
     }
 }

@@ -6,9 +6,9 @@
 #include "../../Eval/CalculateCost.h"
 #include <stdlib.h>
 
-void update_rooks(board_t board, move_t *curmove, castling_t rook_info);
+void update_castling_info(board_t board, move_t *curmove);
 int rook_legal(board_t board, move_t *curmove);
-int castling_happened(board_t board, move_t *curmove);
+Boolean castling_happened(board_t board, move_t *curmove);
 int castling_legal(board_t board, move_t *curmove);
 
 #endif /* !ROOK_H_SEEN */

@@ -7,7 +7,8 @@
 
     typedef int Boolean;
 
-    /* Array of length 4 where each index stores a boolean value regarding whether a castle has 'castled' yet or not */
+    /* Array of length 4 where each index stores a boolean value regarding whether a castle has 'castled' yet or not 
+        Ordered from from A1 to A8 to H1 to H8 */
     typedef int castling_t[TOTAL_CASTLES];
 
     /* 8x8 array containing characters which holistically represent the entire board */
@@ -27,9 +28,9 @@
     /* Contains the number move it is, whether en_passent is possible */
     typedef struct {
         indexvector_t vector;
+        /* Hesitantly, this struct is included to indicate which rooks have moved and therefore cannot castle */
         castling_t castle_info;
-        int movenum, en_passent, en_passent_col;
-        /* Note: en_passent TRUE indicates it is AVAILABLE, not that it has happened */
+        int movenum;
     } move_t;
 
     /* Recursive data structure for a node in the minimax decision tree. */
@@ -41,7 +42,7 @@
     struct node {
         board_t board;
         int options, minimax_cost;
-        move_t move;
+        move_t *move;
         decision_node_t *next_move;
     };
 

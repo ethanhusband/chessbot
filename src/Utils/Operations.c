@@ -158,15 +158,31 @@ void recursive_free(decision_node_t *root) {
     }
 }
 
-/* NOT YET APPLICABLE 
-decision_node_t* create_move(board_t board, move_t *move) {
+decision_node_t* create_decision(board_t board, move_t *move) {
     decision_node_t *newnode=malloc(sizeof(decision_node_t));
     copy_board(board, newnode->board);
 
     update_board(newnode->board, move);
     newnode->next_move = NULL;
-    /* Note: Movenum will be updated at the start of the recursive call */ /*
+    /* Note: Movenum will be updated at the start of the recursive call */ 
     newnode->move = move;
     return newnode;
 }
-*/
+
+/* NOTE: Arguments index_vector and castle_info can be given as NULL, if the intention is to resolve them later */
+move_t* create_move(indexvector_t index_vector, castling_t castle_info, int moves, Boolean can_en_passent, int en_passent_col) {
+    move_t *newMove = (move_t*)malloc(sizeof(move_t));
+    /* Assign everything in a nullsafe manner */
+    if (index_vector != NULL) {
+        for (int i = 0; i < MOVE_VECTOR_SIZE; i++) {
+            newMove->vector[i] = index_vector[i];
+        }
+    }
+    if (castle_info != NULL) {
+        for (int i = 0; i < TOTAL_CASTLES; i++) {
+            newMove->castle_info[i] = castle_info[i];
+        }
+    }
+    newMove->movenum = moves;
+    return newMove;
+}

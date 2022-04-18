@@ -20,6 +20,7 @@
 #include "./IO_Files/ReadInput.h"
 #include "./IO_Files/PrintBoard.h"
 #include "./Utils/Operations.h"
+#include "./Minimax/ComputeMove.h"
 
 
 /* STARTING BOARD */
@@ -35,22 +36,33 @@ board_t starting_board = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, \
 
 /* MAIN FUNCTION */
 
+
 int main(int argc, char const *argv[]) {
-    /* Store variables with the number of moves in the game,
-        whether en_passent just occurred, the column it just occurred in */
-    int moves = 0, en_passent, en_passent_col;
     board_t board;
-    castling_t rook_info;
     copy_board(starting_board, board);
-    printf("STARTING POSITION:\n");
-    /*
-    print_board(board);
+    move_t *curmove = create_move(NULL, NULL, 0, FALSE, SENTINEL);
     
     for (int i=0; i<TOTAL_CASTLES; i++) {
-        rook_info[i] = 1;
+        /* Indicate every rook can castle at the beginning of the game */
+        curmove->castle_info[i] = TRUE;
     }
-    read_movesfile(board, &moves, &en_passent, &en_passent_col, rook_info);
-    play_round(board, moves, en_passent, en_passent_col, rook_info); */
+
+#if RELAYING_GAME
+    printf("STARTING POSITION:\n");
+    print_board(board);
+#endif
+
+    /* Conditionally accept FEN input or MoveFile input */
+#if FEN_INPUT
+    /* Read FEN File */
+#endif
+#if !FEN_INPUT
+    read_movesfile(board, curmove);
+#endif
+
+#if COMPUTING_MOVE
+    play_round(board, moves, en_passent, en_passent_col, rook_info); 
+#endif
     return 0;
 }
 
@@ -68,9 +80,9 @@ CODEBASE STANDARDS:
 ROADMAP / ALGORITHM OUTLINE
 
 * Copy the starting board to the main board.
-* Read a given FEN
+* Read a given FEN (VERSION 2) or MovesFile
     * DISQUALIFIABLE Ensure read moves are legal
-* Implement generalised and efficient legal move checking system
+* Implement legal move checking system
 * Create minimax tree that works for specified depth
     * Create eval bar
         * Material cost
@@ -87,12 +99,12 @@ ROADMAP / ALGORITHM OUTLINE
 * DISQUALIFIABLE Print each move
     * Print whose move it is, cost, board, move that occurred, whether game is over
 
-CURRENT PROGRESS :
+CURRENT PROGRESS (VERSION 1) :
 
 * Copy the starting board to the main board.
-* 
+* Read Movesfile
     * DISQUALIFIABLE Ensure read moves are legal
-* 
+* DISQUALIFIABLE Implement legal move checking system
 * 
     * 
         * 

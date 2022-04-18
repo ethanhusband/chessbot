@@ -5,9 +5,10 @@
 #include "../Utils/Macros.h"
 #include "../Legal/Legal.h"
 #include "../Utils/Operations.h"
+#include "../Pieces/Major/Rook.h"
 #include "PrintBoard.h"
 #include <stdio.h>
 
-int read_movesfile(board_t board, int *moves, int *Men_passent, int *Men_passent_col, castling_t Mcastle_info);
+int read_movesfile(board_t board, move_t *curmove);
 
 #endif /* !INPUT_H_SEEN */

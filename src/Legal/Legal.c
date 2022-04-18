@@ -5,7 +5,9 @@ int legal_input(board_t board, move_t *curmove) {
     char sourcepiece=board[curmove->vector[SOURCE_ROW]][curmove->vector[SOURCE_COL]];
     int move = curmove->movenum%CHECK_MOVE;
     /* Check move is on the board */
+#if DEBUG
     printf("MOVENUM: %d, SOURCEPIECE %c\n", move, sourcepiece);
+#endif
     if (!move_on_board(curmove->vector)) {
         printf("ERROR: Move is not on the board.\n");
         return 0;
@@ -116,19 +118,4 @@ int capture_opposition(board_t board, move_t *curmove) {
         }
     }
     return 0;
-}
-
-/* NOT YET APPLICABLE */
-int game_over(decision_node_t *root) {
-    /* Check if the game is over, returning who won if so */
-    if (root->options == NO_OPTIONS) {
-        /* The game must be over if there are no available moves */
-        if (root->move.movenum%CHECK_MOVE == BLACK_MOVE) {
-            return INT_MAX;
-        } else {
-            return INT_MIN;
-        }
-    } else {
-        return 0;
-    }
 }
