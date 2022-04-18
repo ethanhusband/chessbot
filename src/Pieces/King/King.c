@@ -1,6 +1,4 @@
 #include "King.h"
-#include "Types.h"
-#include "Macros.h"
 
 int king_legal(board_t board, move_t *curmove) {
     int hozdist = abs(curmove->vector[TARGET_COL] - curmove->vector[SOURCE_COL]), \

@@ -1,3 +1,6 @@
+#ifndef MACROS_H_SEEN
+#define MACROS_H_SEEN
+
 /* GLOBAL MACROS (NOT MAKRIS) */
 
     /* The 'board reading' constants */
@@ -63,3 +66,5 @@
     #define INITIAL_DEPTH 0
     #define NO_OPTIONS 0
     #define INITIAL_SIZE 20
+
+#endif /* !MACROS_H_SEEN */

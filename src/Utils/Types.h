@@ -1,4 +1,7 @@
-#include "Macros.h"
+#ifndef TYPES_H_SEEN
+#define TYPES_H_SEEN
+
+#include "./Macros.h"
 
 /* TYPEDEFS */
 
@@ -41,3 +44,5 @@
         move_t move;
         decision_node_t *next_move;
     };
+
+#endif /* !TYPES_H_SEEN */

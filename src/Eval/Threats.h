@@ -1,1 +1,0 @@
-int square_threat(board_t board, int row, int col, int player);

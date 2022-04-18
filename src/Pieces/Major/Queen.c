@@ -1,6 +1,4 @@
 #include "Queen.h"
-#include "Types.h"
-#include "Macros.h"
 
 int queen_legal(board_t board, move_t *curmove) {
     /* Detect legality of a queen move */

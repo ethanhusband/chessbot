@@ -1,6 +1,4 @@
-#include "ChessBot.h"
-#include "Types.h"
-
+#include "PrintBoard.h"
 
 /**
  * @brief Prints out the board and other relevant information for a given move.

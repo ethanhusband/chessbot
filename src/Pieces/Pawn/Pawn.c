@@ -1,5 +1,4 @@
-#include "Types.h"
-#include "Macros.h"
+#include "Pawn.h"
 
 int pawn_legal(board_t board, move_t *curmove) {
     /* Verify a pawn move is legal */

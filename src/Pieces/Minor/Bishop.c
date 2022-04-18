@@ -1,5 +1,4 @@
-#include "Types.h"
-#include "Macros.h"
+#include "Bishop.h"
 
 int bishop_legal(board_t board, move_t *curmove) {
     /* Detect legality of a bishop move */

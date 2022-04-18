@@ -1,7 +1,4 @@
 #include "GetOptionsTree.h"
-#include "Types.h"
-#include "Macros.h"
-#include <stdlib.h>
 
 void calculate_options(decision_node_t *node) {
     /* Fill the array of possible move options for a board */

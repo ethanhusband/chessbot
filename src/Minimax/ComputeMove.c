@@ -1,7 +1,4 @@
 #include "ComputeMove.h"
-#include "Types.h"
-#include "Macros.h"
-#include <stdlib.h>
 
 int play_round(board_t board, int move, int en_passent, int en_passent_col, castling_t rook_info) {
     /* Play a round of the game, return 0 if game over, 1 otherwise */

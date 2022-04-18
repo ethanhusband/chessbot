@@ -1,12 +1,8 @@
-#include "Types.h"
-#include "Macros.h"
 #include "ReadInput.h"
-#include "Legal.h"
-#include "Operations.h"
-#include "PrintBoard.h"
 
-int read_input(board_t board, int *moves, int *Men_passent, int *Men_passent_col, castling_t Mcastle_info) {
-    /* Interpret the input, update the board.
+
+int read_movesfile(board_t board, int *moves, int *Men_passent, int *Men_passent_col, castling_t Mcastle_info) {
+    /* Interpret the input from a movesFile, update the board.
     Return 1 if input is valid, 0 otherwise */
     int en_passent=0, en_passent_col=SENTINEL, i;
     char sourcepiece;

@@ -3,6 +3,11 @@
     @author: Ethan Husband
 */
 
+/* TO DO
+    * Fix all #includes to work without include path modifications
+    * Move all #includes to header files
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -10,10 +15,11 @@
 #include <math.h>
 #include <strings.h>
 #include <limits.h>
-#include "Operations.h"
-#include "Types.h"
-#include "Macros.h"
-#include "ReadInput.h"
+#include "./Utils/Types.h"
+#include "./Utils/Macros.h"
+#include "./IO Files/ReadInput.h"
+#include "./IO Files/PrintBoard.h"
+#include "./Utils/Operations.h"
 
 
 /* STARTING BOARD */
@@ -37,13 +43,14 @@ int main(int argc, char const *argv[]) {
     castling_t rook_info;
     copy_board(starting_board, board);
     printf("STARTING POSITION:\n");
+    /*
     print_board(board);
+    
     for (int i=0; i<TOTAL_CASTLES; i++) {
-        /* None of the rooks have castled yet */
         rook_info[i] = 1;
     }
-    read_input(board, &moves, &en_passent, &en_passent_col, rook_info);
-    play_round(board, moves, en_passent, en_passent_col, rook_info);
+    read_movesfile(board, &moves, &en_passent, &en_passent_col, rook_info);
+    play_round(board, moves, en_passent, en_passent_col, rook_info); */
     return 0;
 }
 

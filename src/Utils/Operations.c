@@ -1,10 +1,4 @@
-#include "Operations.h"
-#include "Types.h"
-#include "Macros.h"
-#include <stdlib.h>
-
-
-
+#include "./Operations.h"
 
 /* MISCELLANEOUS OPERATIONS ON THE PROJECTS DATA STRUCTURES */
 
@@ -143,13 +137,13 @@
     }
 
     void expand_array(decision_node_t *possible_moves, int index, int *cursize) {
-    if (index>=cursize) {
-        /* Enlarge our options array if many */
-        *cursize = 2*(*cursize);
-        possible_moves = realloc(possible_moves, (*cursize)*sizeof(decision_node_t));
-        assert(possible_moves != NULL);
+        if (index>=cursize) {
+            /* Enlarge our options array if many */
+            *cursize = 2*(*cursize);
+            possible_moves = realloc(possible_moves, (*cursize)*sizeof(decision_node_t));
+            assert(possible_moves != NULL);
+        }
     }
-}
 
 /* NOT YET APPLICABLE */
 void recursive_free(decision_node_t *root) {
@@ -164,14 +158,15 @@ void recursive_free(decision_node_t *root) {
     }
 }
 
-/* NOT YET APPLICABLE */
+/* NOT YET APPLICABLE 
 decision_node_t* create_move(board_t board, move_t *move) {
     decision_node_t *newnode=malloc(sizeof(decision_node_t));
     copy_board(board, newnode->board);
 
     update_board(newnode->board, move);
     newnode->next_move = NULL;
-    /* Note: Movenum will be updated at the start of the recursive call */
+    /* Note: Movenum will be updated at the start of the recursive call */ /*
     newnode->move = move;
     return newnode;
 }
+*/

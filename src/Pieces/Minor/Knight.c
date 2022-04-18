@@ -1,5 +1,4 @@
-#include "Types.h"
-#include "Macros.h"
+#include "Knight.h"
 
 int knight_legal(board_t board, move_t *curmove) {
     /* Detect legality of knight move */

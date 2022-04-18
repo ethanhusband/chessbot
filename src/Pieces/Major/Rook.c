@@ -1,5 +1,3 @@
-#include "Types.h"
-#include "Macros.h"
 #include "Rook.h"
 
 int rook_legal(board_t board, move_t *curmove) {

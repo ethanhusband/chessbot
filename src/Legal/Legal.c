@@ -1,7 +1,4 @@
 #include "Legal.h"
-#include "Types.h"
-#include "Macros.h"
-#include <limits.h>
 
 int legal_input(board_t board, move_t *curmove) {
     /* Stop the program if any input is illegal */
