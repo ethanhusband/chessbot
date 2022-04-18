@@ -18,7 +18,7 @@ void recur_fill_costs(decision_node_t *root, int depth) {
                 continue;
             }
             (root->next_move+i)->minimax_cost = \
-            calculate_cost((root->next_move+i)->board);
+            material_cost((root->next_move+i)->board);
         }
         propagate_cost(root);
         return;

@@ -13,6 +13,7 @@ void calculate_options(decision_node_t *node) {
             curpiece = node->board[i][j];
             if ((node->move.movenum)%CHECK_MOVE==WHITE_MOVE) {
                 /* It must be white's move */
+                /* TO BE IMPLEMENTED
                 if ((curpiece == EMPTY_CELL) || (isupper(curpiece))) {
                     continue;
                 } else if (curpiece == WHITE_PAWN) {
@@ -28,9 +29,9 @@ void calculate_options(decision_node_t *node) {
                     add_rook_options();
                 } else if (curpiece == WHITE_KING) {
                     add_king_options();
-                }
+                }*/
             } else if ((curpiece != EMPTY_CELL) || (islower(curpiece))) {
-                /* Must be black's move */
+                /* Must be black's move */ /* TO BE IMPLEMENTED
                 if (curpiece == BLACK_PAWN) {
                     add_bpawn_options();
                 } else if (curpiece == BLACK_KNIGHT) {
@@ -44,7 +45,7 @@ void calculate_options(decision_node_t *node) {
                     add_rook_options();
                 } else if (curpiece == BLACK_KING) {
                     add_king_options();
-                }
+                } */
             }
         }
     }
@@ -63,11 +64,11 @@ void calculate_options(decision_node_t *node) {
 
 void add_w_pawn_options(move_t *last, decision_node_t *possible_moves, int i, int j, int *index, int *cursize) {
     move_t *new=(move_t*)malloc(sizeof(move_t));
-    int i, needmovenode=0;
+    int needmovenode=0;
     if ((last->en_passent) && (abs(j-last->en_passent_col) == 1) && (i == EN_PASSENTWROW)) {
         new->vector[SOURCE_ROW]=i; new->vector[SOURCE_COL]=j; new->vector[TARGET_ROW]=i+1; new->vector[TARGET_COL]=last->en_passent_col;
-        for (i=0; i<TOTAL_CASTLES; i++) {
-            new->castle_info[i] = last->castle_info[i];
+        for (int k=0; k<TOTAL_CASTLES; k++) {
+            new->castle_info[k] = last->castle_info[k];
         }
         new->en_passent = 0; new->en_passent_col = SENTINEL;
         new->movenum = last->movenum + 1;

@@ -3,6 +3,7 @@
 
 #include "../../Utils/Types.h"
 #include "../../Utils/Macros.h"
+#include <stdlib.h>
 
 int bishop_legal(board_t board, move_t *curmove);
 

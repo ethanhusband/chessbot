@@ -69,7 +69,7 @@ int castling_legal(board_t board, move_t *curmove) {
             return 0;
         }
         for (i=0; i<5; i++) {
-            if (square_threat(board, 0, i, BLACK_MOVE)) {
+            if (square_threats(board, 0, i, BLACK_MOVE)) {
                 return 0;
             }
         }
@@ -78,7 +78,7 @@ int castling_legal(board_t board, move_t *curmove) {
             return 0;
         }
         for (i=4; i<BOARD_SIZE; i++) {
-            if (square_threat(board, 0, i, BLACK_MOVE)) {
+            if (square_threats(board, 0, i, BLACK_MOVE)) {
                 return 0;
             }
         }
@@ -87,7 +87,7 @@ int castling_legal(board_t board, move_t *curmove) {
             return 0;
         }
         for (i=0; i<5; i++) {
-            if (square_threat(board, 7, i, BLACK_MOVE)) {
+            if (square_threats(board, 7, i, BLACK_MOVE)) {
                 return 0;
             }
         }
@@ -96,7 +96,7 @@ int castling_legal(board_t board, move_t *curmove) {
             return 0;
         }
         for (i=5; i<BOARD_SIZE; i++) {
-            if (square_threat(board, 7, i, BLACK_MOVE)) {
+            if (square_threats(board, 7, i, BLACK_MOVE)) {
                 return 0;
             }
         }

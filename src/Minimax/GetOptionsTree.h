@@ -3,7 +3,10 @@
 
 #include "../Utils/Types.h"
 #include "../Utils/Macros.h"
+#include "../Utils/Operations.h"
 #include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
 
 void calculate_options(decision_node_t *node);
 

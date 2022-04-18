@@ -3,6 +3,8 @@
 
 #include "../../Utils/Types.h"
 #include "../../Utils/Macros.h"
+#include "../../Eval/CalculateCost.h"
+#include <stdlib.h>
 
 void update_rooks(board_t board, move_t *curmove, castling_t rook_info);
 int rook_legal(board_t board, move_t *curmove);

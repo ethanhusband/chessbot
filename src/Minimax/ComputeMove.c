@@ -16,7 +16,7 @@ int play_round(board_t board, int move, int en_passent, int en_passent_col, cast
         return 0;
     }
     update_board(board, best_move);
-    print_move(board, *best_move);
+    print_move(board, !IS_COMPUTER_MOVE, best_move);
     free(best_move); recursive_free(root); free(root);
     return 1;
 }

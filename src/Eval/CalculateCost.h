@@ -4,10 +4,11 @@
 #include "../Utils/Types.h"
 #include "../Utils/Macros.h"
 #include <limits.h>
+#include <ctype.h>
 
 int material_cost(board_t board);
 int positional_cost(board_t board);
 double aggregate_cost(board_t board);
-int square_threat(board_t board, int row, int col, int player);
+int square_threats(board_t board, int row, int col, int player);
 
 #endif /* !COST_H_SEEN */

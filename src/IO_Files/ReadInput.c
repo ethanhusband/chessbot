@@ -1,6 +1,5 @@
 #include "ReadInput.h"
 
-
 int read_movesfile(board_t board, int *moves, int *Men_passent, int *Men_passent_col, castling_t Mcastle_info) {
     /* Interpret the input from a movesFile, update the board.
     Return 1 if input is valid, 0 otherwise */

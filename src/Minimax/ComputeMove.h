@@ -3,7 +3,13 @@
 
 #include "../Utils/Types.h"
 #include "../Utils/Macros.h"
+#include "../Legal/Legal.h"
+#include "../Utils/Operations.h"
+#include "../IO_Files/PrintBoard.h"
+#include "FindMinCost.h"
+#include "GetOptionsTree.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int play_round(board_t board, int move, int en_passent, int en_passent_col, castling_t rook_info);
 void recursive_addlayers(decision_node_t *node, int move, int tree_depth);
