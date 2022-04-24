@@ -3,11 +3,6 @@
     @author: Ethan Husband
 */
 
-/* TO DO
-    * Fix all #includes to work without include path modifications
-    * Move all #includes to header files
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -35,7 +30,8 @@ board_t starting_board = {{'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}, \
 
 
 /* MAIN FUNCTION */
-
+/* NOTE: VERSION ALPHA IS ENTIRELY UNFINISHED AND UNUSEABLE, JUST CONTAINING THE CONCEPT AND PIECES OF CODE */
+/*       IT IS ESSENTIALLY A SKELETON OF THE IDEA, AN INCOMPLETE ATTEMPT AT ADAPTING A C BASED CHECKERS BOT TO CHESS  */
 
 int main(int argc, char const *argv[]) {
     board_t board;

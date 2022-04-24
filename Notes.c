@@ -1,4 +1,265 @@
+/*
+    Acknowledge that if these notes seem obfuscated, it is because they are primarily for the developer to refer to, 
+    as many of these concepts were unlearned prior to the project like C++, neural networks and machine learning.
+
+*/
+
 /* 
+
+C++
+
+    C KNOWLEDGE IS ASSUMED HERE - SKIP THIS SECTION IF YOURE NOT A DEV, THE APPROACH WILL STILL MAKE SENSE
+    Most C programs are also valid in C++, it is essentially an extension of C
+
+    C++ uses <iostream> instead of <stdio.h>
+
+    A good convention is that function and class names use PascalCase while variables use underscores (e.g. variable_x) 
+
+    C++ has an explicit 'string' type unlike C 
+
+    The main function in C++ optionally has arguments, it just needs to be named "main" really 
+
+    Classes are instantiated in the following way:
+    class MyClass {
+        // Constructor Method
+        public: MyClass() {
+            // Instantiation
+        }
+    }
+
+    To compile a C++ program, execute: g++ MyProgram.cpp -o MyProgram
+    (The -o flag lets you name the resulting executable file MyProgram)
+
+    Hello World:
+    #include <iostream>
+    using namespace std;
+    
+    int main() {
+    cout << "Hello, world!";
+    return 0;
+    }
+
+    Standard library names still must be enclosed in <> and user libraries must still be enclosed in ""
+
+    The line "using namespace std;" allows us allows the usage of standard library objects without prepending the std:: identifier.
+    If this line is omitted, the cout in hello world (or any other standard library object) must be replaced with std::cout
+
+    INPUT AND OUTPUT
+
+    To utilise input and output, we need to #include <iostream>
+
+    To output anything we need std::cout which stands for 'characters out'. We then use the insertion operator << to
+    add a set of characters to our output
+    Example: std::cout << "Hello world"
+
+    Note that multiple insertions can be used in the same statement, for example
+    std::cout << "Codecademy is " << 10 << " years old.";
+
+    Note that std::cout does not automatically append a \n at the end of each statement
+    We can either append a \n to our string or add << std::end1 at the end of our insertion
+
+    To access input, we use std::cin
+    Furthermore to assign it to a string variable x we would use std::cin >> x
+
+    Example of using input and output together:
+        int age;  // the variable to hold the input value
+        std::cout << "Enter your age: ";  // asks the user for age
+        std::cin >> age;  // get user input and store it in variable name
+        std::cout << "You are " << age << " years old.";  // print the user's age
+
+    VARIABLES
+
+    Mostly the same as C. Constant variables have a 'const' before they are defined
+
+    TYPES
+
+    5 basic C++ data types are int, double, char, string, bool (true/false not 0/1)
+
+    Note to use strings you need to #include <string>. The string type is then references with std::string
+    Strings can be indexed and have a .length() method
+
+    OPERATORS
+
+    All operators are the same. Do not that the bitshift operator is the same as the std::cin and std::cout insertion operator (idk how)
+    Bitwise operators should be researched if needed
+
+    POINTERS
+
+    A reference is created by adding an & between the type and variable name, as opposed to * in C
+
+    Refertences however have a few caveats, they can be called references and:
+        References must be initialized: there is no such thing as an empty reference.
+        References cannot be reassigned: reassigning an existing reference variable will produce unexpected results.
+
+    The memory address of a variable can always be accessed by placing an & in front of the variable name
+
+    Pointer variables are however declared in the same way as C
+    Pointers are dereferenced in the same way as C
+
+    Note: instead of NULL as the default null pointer reference, C++ uses the keyword nullptr instead
+
+    MEMORY ALLOCATION
+
+    For general array instantiation, we can use the new keyword
+
+    C++ also has the malloc and realloc functions available for dynamic size updating
+
+    CONTROL FLOW
+
+    Conditionals are exactly the same as C
+    Switch statements are the same (require breaks)
+    
+    C++ implements for-each loops, with the same syntax as Java:
+        int fibonacci[5] = {0, 1, 1, 2, 3};
+        for (int number : fibonacci) {
+        std::cout << number;
+        }
+
+    Using the keyword 'auto' in a for-each loop in place of the type will let C++ deduce the type
+
+    Calling random numbers with rand() and srand(int seed) is the same as C
+
+    FUNCTIONS
+
+    C++ allows for default (and therefore, optional) parameters to be passed through
+    It also enables function overloading, so you can have functions with the same name
+    
+    To incorporate command line arguments, simply add the normal C parameters to the main function
+    Note that if a command line argument intends to contain double quotes, it must be escaped first like /"
+
+    CLASSES
+
+    To create classes we use the class keyword
+    Each class must end with a semi-colon, and in general has the following boiler plate
+        class ExampleClass {
+
+        };
+    The class obviously contains attributes and methods
+
+    The class is seperated into its public and private sections, such that all public members come after a public: keyword
+
+    Class methods can be declared outside of the class, and sometimes need to be in header files
+    They are simply preceded by the namespace that is the classname:
+        void School::banner() {
+            std::cout << name << " is " << age << " years old.\n";
+        }
+
+    Classes essentially replace typedef in C++
+
+    By default, all class members are private. So there is a private: keyword, but it is often redundant
+
+    C++ classes also include the 'protected' modifier so inherited classes can access superclass members
+
+    Constructors can be called like so: ClassName varName(constructor arguments)
+
+    A problem is run into when a constructor attempts to initialise const variables
+    C++ implements a member initialisation list to get around this:
+        public:
+            Book() 
+                : title("Diary"), pages(100) {}    // Member initializer list
+    Where title and pages are const members
+
+    Note any code can be placed in the constructor body after the member initialisation
+
+    Each class also has a Destructor, denoted by ~ClassName() {}
+    which is implicitly called whenever the object is destroyed or deleted
+
+    To declare a class as extending another superclass, we use the notation
+    class Dog: public Animal
+
+    Suppose we have a superclass constructor 
+        public:
+            Animal(std::string new_gender, int new_age)
+                : gender(new_gender), age(new_age) {}
+            };
+    Then we can call this in a subclass in our member initialiser list like so
+        public:
+            // Call base class constructor
+            Dog(std::string new_gender, int new_age, std::string new_breed)
+                : Animal(new_gender, new_age), breed(new_breed) {}
+
+    VECTORS
+
+    C++ has a vector type that is included via #include <vector>
+    Unlike arrays, vectors can dynamically grow and shrink in size, they are like python lists (ideal for decision tree)
+    Declared like:
+        std::vector<char> alphabet;
+
+    To add a new element to the end of the vector, use the .push_back method
+    In turn the end of a vector can be removed with the .pop_back method (note this has no return value)
+
+    Other methods include .front() and .back(), which can be used to access the last and first elements of a vector
+
+    .size() gives vector length
+    .empty() indicates if it is empty
+
+    Vectors can be iterated through using for-each loops
+
+    STACKS AND QUEUES
+
+    C++ has built in stack and queue data structures under #include <stack>, #include <queue>
+    Declared like so:
+        std::stack<int> plates;
+        std::queue<int> line;
+
+    The stack has methods:
+        - .push()
+        - .pop()
+        - .top()
+        - .size()
+        - .empty()
+
+    Queue has methods:
+        - .push()
+        - .pop()
+        - .front()
+        - .back()
+        - .size()
+        - .empty()
+
+    SETS
+
+    C++ also has sets and unordered sets available as a type
+
+    They are declared like so:
+        std::unordered_set<int> primes;
+
+    Set operations:
+        - .add()
+        - .erase()
+        - .count() (check the amount of times an element is in a set)
+        - .size()
+        - .empty()
+
+    Note that unordered sets are generally faster than ordered sets
+
+    HASH MAP
+
+    In C++, a hash map is a data structure that stores a collection of elements formed by a combination of a key value and a mapped value. 
+    Each key value acts as a unique identifier for the element, while the mapped value is the content associated with this key. 
+    This is often referred to as a key-value pair.
+
+    There are two types <map> and <unordered_map>
+
+    To declare a hashmap we need to state the type of the keys and the values:
+        std::unordered_map<std::string, int> country_codes;
+    You can also initialise this to have key-value pairs already, like:
+        std::unordered_map<std::string, int> country_codes( 
+            {{"India", 91}, 
+            {"Italy", 39}});
+
+    Hash map methods:
+        - .insert({key, value})
+        - .erase(key)
+        - .count(key)
+        - .at(key)
+            This is useful for checking maps since indexing a key that does not exist will add it to the map
+        - .size()
+        - .empty()
+
+    When using a for-each loop on a map, with an individual key-value pair you can do .first() and .second() to access the key and value
+
+    Like with sets, unordered maps are faster
 
 NEURAL NETWORKS
 
@@ -87,11 +348,111 @@ NEURAL NETWORKS
     An easier to train function is one called ReLU(a) = max(0, a)
         Has an interesting biological motivation from how neurons are either activated or not
 
-MACHINE LEARNING
+HOW NEURAL NETWORKS LEARN
 
+    Our example goal is still handwritten digit recognition - the 'hello world' of neural networks
+    
+    To recall our example, a 24x24 image determines the activations of 784 neurons on an input layer
+    Each activation in the following layers is determined by a weighted sum of every activation in the previous layer, plus bias
+    This is then passed through a sigmoid or ReLU function which scales the weighted sum between 0 and 1
+    In sum, with 2 hidden layers of size 16, an input layer of size 784 and output layer of size 10, 
+        the network has around 13000 weights and biases which might be adjusted
+    The motivation for our structure was that hopefully the second layer picks up on edges,
+    The third layer picks up shapes
+    The final layer recognises a number
+
+    What we want is an algorithm which provides numbers, and their actual value,
+    and the network can adjust its 13000 variables depending on how correct it was (training)
+
+    Ultimately machine learning is just finding the minimum of some given function, by adjusting its 13000 variables.
+
+    To start things off, the weights and biasses are initialised totally randomly
+    The network will initially perform horribly
+    What must be done is that you define a 'cost' function, which compares the output layer and desired output layer
+        More specifically, you add up the squares of the differences for each value, and this is the cost of the training example
+    In turn, the layer the number on the cost function, the worst the network has performed
+
+    Then what you can do is take an 'average cost' over tens of thousands of training example,
+    getting a more justified measure of how good or bad the network is
+
+    Now we can see how we are just trying to minimise a function, that is, the cost function, and can adjust 13000 variables
+        in order to do so
+
+    How we can minimise each time? Consider a function with a single input
+        If we can figure out the slope at our given random point, we can figure out which direction to move in to minimise
+        I.e. shift to the left if slope is positive, shift to the right if negative
+        A caveat is that there is no gaurantee that a local minimum you land in will be the absolute minimum
+        Also note if you make your step sizes proportional to the slope, then you go slower when flattening out
+
+    For a function with two inputs, the problem is to ask which (x, y) direction to step in order to decrease
+    Taking the negative of nablaF gives you the direction
+
+    So in general, the process for computationally finding the minimum is
+        Compute nabla of function at this random point
+        Take a step in the -nablaF direction
+        Repeat
+    
+    If you organise the 13000 weights into one vector, then we want to move in direction of the negative cost function gradient 
+    at this 13000 weight 'point'
+    Remember that the cost function represents an average over all of the training data
+
+    A network 'learning' always means minimising a cost function
+
+    This network will simply learn the patterns itself, we never actually told it what it was looking for.
+    It learns purely based on what the output was compared against to create the cost function
+
+    Wrapping up, the network still doesnt actually recognise patterns by the second layer, shapes by the third etc
+    The patterns it recognises make no sense to us
+    And in fact, if we show it a nonsense image, it will say that it is some particular number with certainty
+    That is since we always provided certain comparisons
+    
+    What we have introduced so far is an outdated type of neural network, a 'multilayer perceptron'
+    More advanced modern variants are better at the job, but this was necessary to introduce as a foundation to the idea
+
+BACKPROPAGATION
+
+    Backpropagation is an algorithm for computing the gradient we need to revise our weights and biases
+
+    The derivative cost function for a set of weight values tells us how sensitive the cost function is to changes in each weight
+
+    We said before that the cost function takes the average of multiple examples, but for now consider just one example, a 2.
+    What effect should this one example have on how the weights and biases are adjusted
+    Untrained, our cost function will have a high output, output activations will be quite random
+
+    What we need is the output activation for the 2 neuron to be higher next time, and all others closer to 0
+    This output activation for neuron 2 is a product of a few variables:
+        - b bias in calculation of 2 (should be increased)
+        - w_i every weight involved in calculation of 2 (should be increased in proportion to activation_i)
+        - activations of the previous layer (should be modified)
+    *Note that increasing the weights connected to neurons in the previous layer with a high activation havr a greater efect
+    on the activation of the output neuron than increasing the weights for those in the previous layer with low activations
+
+    The other way to increase the activity of the output 2 neuron is to increase a_i for all positive weights
+    and decrease a_i for all negative weights
+    However, we also want every non-2 neuron to be less active, and each of these has its own set of weights
+    So what is done is that the desired previous a_i value for every output neuron is added together to give what it should be
+    This is where the idea of propagating backwards comes in
+    
+    Note that as soon as we do this process for one layer, we can recursively do it for all layers
+
+    If we trained this network, it will obviously eventually realise that every image is a two
+    However, if we average out the desired w_i values for each training example, we get a network that coordinates a larger task
+    This averaged amount is equivalent to the negative gradient of the cost function! (or a good approximation, at least)
+
+    Since a large amount of training data will take too long for a computer to average out,
+    We often break it into smaller amounts of examples for each backprop step to occur
+
+    This technique is referred to as stochastic gradient descent
+
+    It is worth noting that for all kinds of neural networks, a lot of training data is needed.
+
+    NOTE: The 'softmax' function is often used over the sigmoid function
+
+BACKPROPAGATION CALCULUS
+
+    https://drive.google.com/file/d/1ehuLY3Gx08icoJ-sh7ymuomiF0kRCJyx/view?usp=sharing
     
 
-    
 RECURSIVE DATA STRUCTURES
 
     Consider a piece of data with various fields:
@@ -194,6 +555,17 @@ BRINGING IT TOGETHER
     Ultimately, the program employs a neural network self-learning board evaluation mechanism in amalgamation
     with the the minimax tree paradigm (utilising other techniques like Alpha-Beta pruning 
     to and the neural network growing more accurate over time to shrink the tree size and therefore run faster)
-    in order to play the best chess move with a given board and player turn
+    written in C++ in order to play the best chess move with a given board and player turn.
+    
+
+
+
+REFERENCES
+
+https://www.cs.tau.ac.il/~wolf/papers/deepchess.pdf
+
+https://ccrl.chessdom.com/ccrl/4040/games.html
+
+
 
 */
