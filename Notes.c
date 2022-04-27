@@ -261,6 +261,39 @@ C++
 
     Like with sets, unordered maps are faster
 
+BITBOARDS
+
+    "A more efficient but more elaborate board representation than the array-based structures is the bitboard. 
+    A bitboard is a 64-bit sequence of bits (0 or 1), which indicates the absence or presence (false or true) 
+    of some state of each space on the board. A board position can then be represented using a series of bitboards. 
+    For example, a series of bitboards for each piece type, for each side, can represent the board position.
+    The advantage to this representation is the ability to use bit parallel operations upon the 64-bit entities 
+    instead of iteration to manipulate and derive information about the state of the board. 
+    This makes maximal use of the hardware available, especially as 64-bit processors have become mainstream.
+    A substantive advantage of bitboards is that enables maps for the spaces attacked by each type of piece on each space 
+    of the board to be pre-collated and stored in a table, so that possible moves of the piece can 
+    be retrieved in a single memory fetch of the attack map for the square on which the piece resides which, 
+    excluding spaces occupied by friendly pieces (one bitwise operation), yields the legal moves of the piece. 
+    But the moves of the sliding pieces (rooks, bishops, queens) are indeterminate because 
+    the moves of these pieces depend on the configuration of other pieces on the board. 
+    So special and complex data structures have been devised to represent their moves."
+    These special and complex data structures include rotated bitboards
+
+    12 bitboards are needed to represent any given chessboard
+
+    Binary addition does not carry the 1, it is logically an OR operation on a group of booleans
+
+    Consider a bitboard which represents the pawns (and therefore the pawn structure) 
+    Notice that the bitboard representing all the squares which can be attacked would be shifted up and across 1
+    This can be achieved by bitshifting over 7 and 9 spaces, a much faster operation than for an array board representation
+    Then if you add PawnBoard << 7 + PawnBoard << 9 you get a bitboard of every square that the Pawns can attack
+
+
+
+
+
+
+
 NEURAL NETWORKS
 
     How do brains recognise numbers? 
@@ -562,10 +595,14 @@ BRINGING IT TOGETHER
 
 REFERENCES
 
-https://www.cs.tau.ac.il/~wolf/papers/deepchess.pdf
+EXAMPLE OF SUCCESSFUL BOT - https://www.cs.tau.ac.il/~wolf/papers/deepchess.pdf
 
-https://ccrl.chessdom.com/ccrl/4040/games.html
+BOARD DATABASE - https://ccrl.chessdom.com/ccrl/4040/games.html
 
+GENERAL KEY POINTS - https://www.cs.cornell.edu/boom/2004sp/ProjectArch/Chess/algorithms.html
 
+BITBOARDS - https://www.chessprogramming.org/Bitboards#Bitboard_Basics
+
+WALKTHROUGH EXAMPLE PLAYLIST - https://www.youtube.com/watch?v=V_2-LOvr5E8&list=PLQV5mozTHmacMeRzJCW_8K3qw2miYqd0c
 
 */
