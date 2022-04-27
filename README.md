@@ -1,7 +1,9 @@
 # chessbot
 
 This bot aims to read a given movesFile or FEN and determine the best possible move using C++, 
-neural networks, minimax trees and other more niche chess programming techniques which will be described in Notes.c
+neural networks, minimax trees and other more niche chess programming techniques.
+All paradigms, techniques and the overall structure of this project can be found in Notes.c, 
+Which was made a c file because notes in green were preferred and its funny.
 
 Version History:
     VERSION ALPHA - An incomplete attempt at adapting a checkersbot written in C to a chessbot

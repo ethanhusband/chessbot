@@ -1,12 +1,13 @@
 #include "Macros.hh"
 #include <string>
+#include <assert.h>
 
 typedef uint64_t Bitboard;
 /* Array board used as a data translation layer when reading input */
 typedef char ArrayBoard[BOARD_WIDTH][BOARD_WIDTH];
 
 /* An array of bitboards that stores the state of each type of piece in a game */
-typedef Bitboard BoardState[BITBOARDS_PER_STATE];
+typedef Bitboard Bitboards[BITBOARDS_PER_STATE];
 
 /* Mapping of bitboard types to their index in a boardstate type */
 enum BS_INDEX {
@@ -23,6 +24,12 @@ enum BS_INDEX {
     WHITE_ROOK,
     WHITE_QUEEN,
     WHITE_KING,
+};
+
+/* Note that BoardState may be abbreviated as BSC (BoardState Class) */
+class BoardState {
+    public: 
+        Bitboards board;
 };
 
 class MinimaxTree {
